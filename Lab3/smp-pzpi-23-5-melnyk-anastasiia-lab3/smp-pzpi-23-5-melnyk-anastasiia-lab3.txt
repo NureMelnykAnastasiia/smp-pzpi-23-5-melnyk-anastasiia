@@ -1,0 +1,491 @@
+﻿Харківський національний університет радіоелектроніки
+
+Факультет комп'ютерних наук
+
+Кафедра програмної інженерії
+
+
+
+
+Звіт
+з лабораторної роботи № 3
+з дисципліни: "Скриптові мови програмування"
+
+
+
+
+
+
+
+
+Виконала:
+ст. гр. ПЗПІ-23-5
+Мельник А.
+
+Перевірив:
+ст. викл. каф. ПІ
+Сокорчук І. П.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Харків - 2025
+
+1 ІСТОРІЯ ЗМІН
+
+№ДатаВерсія звітуОпис змін та виправлень122.05.20251Створено розділи "Історія змін", "Завдання", "Опис виконаної роботи"223.03.20252Створено розділ "Висновки" та додатки
+
+
+2 ЗАВДАННЯ
+
+     Необхідно розробити базовий інтернет-магазин на PHP з використанням SQLite для зберігання даних, реалізувавши ключові функції: перегляд товарів, додавання до кошика, управління сесіями користувачів та оформлення замовлень. Проект має включати модульну структуру з розділенням логіки (config.php, products.php, cart.php) та шаблонів (header.php, footer.php), забезпечити валідацію даних і захист від SQL-ін'єкцій через PDO. Додатково необхідно забезпечити зручну навігацію між сторінками та автоматичну ініціалізацію бази даних із тестовими товарами
+
+
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+
+     Система реалізує основні функції інтернет-магазину: перегляд товарів, додавання до кошика, управління кошиком та навігацію між сторінками. Проект складається з шести основних PHP файлів.
+     Файл index.php служить точкою входу в додаток і виконує роль домашньої сторінки (див. додаток Б.5). Основними функціями є відображення вітального повідомлення, надання навігаційних посилань до основних розділів системи та підключення необхідних компонентів. Код файлу включає підключення конфігураційного файлу через require_once 'config.php' для ініціалізації бази даних та систем.
+     Структура сторінки містить HTML контейнер з заголовком "Ласкаво просимо до нашого інтернет-магазину!" та список доступних розділів. Навігаційні елементи включають посилання на сторінку товарів (products.php) та кошик (cart.php) з описами їх призначення.
+     Конфігураційний файл config.php відповідає за налаштування з'єднання з базою даних SQLite та надання допоміжних функцій для роботи з товарами (див. додаток Б.2). Система автоматично створює таблицю products з полями id, name та price при першому запуску. База даних ініціалізується з семома початковими товарами: молоко, хліб, сир, сметана, кефір, вода газована та печиво.
+     Файл містить дві ключові функції: getAllProducts($pdo) для отримання всіх товарів та getProductById($pdo, $id) для отримання конкретного товару за ідентифікатором. Використовуються підготовлені запити PDO для забезпечення безпеки від SQL ін'єкцій.
+     Шаблон заголовка header.php забезпечує уніфікований вигляд навігаційного меню для всіх сторінок системи (див. додаток Б.4). Файл містить HTML структуру з посиланнями на головні розділи: Home, Products та Cart. Це найпростіший компонент системи з мінімальною складністю та відсутністю серверної логіки.
+     Підвал системи footer.php дублює навігаційні елементи з header.php та додає посилання "About Us" (див. додаток Б.3). Головною функцією є закриття HTML структури сторінки тегами </body> та </html>. Файл забезпечує консистентність дизайну та надає альтернативні способи навігації.
+     Найскладніший компонент системи - products.php, що реалізує відображення каталогу товарів та логіку додавання до кошика (див. додаток Б.6). Файл обробляє як GET запити для відображення списку товарів, так і POST запити для обробки форм додавання до кошика. Система отримує товари з бази даних через функцію getAllProducts() та відображає їх у вигляді форми з полями для введення кількості.
+     При обробці POST запитів здійснюється валідація введених даних та перевірка, що користувач обрав хоча б один товар. Товари зберігаються в сесійному масиві $_SESSION['cart'] з інформацією про id, назву, ціну та кількість. Система оновлює кількість товару якщо він вже присутній в кошику, або додає новий запис.
+     cart.php - Кошик покупок (див. додаток Б.1). Компонент кошика відповідає за відображення обраних товарів, розрахунок сум та видалення товарів. Файл читає дані з $_SESSION['cart'] та відображає їх у табличному форматі з колонками ID, назва, ціна, кількість, сума та дії. Система автоматично розраховує загальну суму замовлення та надає функціонал видалення товарів через GET параметр.
+     При видаленні товару система знаходить відповідний елемент в масиві сесії, видаляє його та перенумеровує індекси для підтримки цілісності структури. Якщо кошик порожній, відображається повідомлення "Ваш кошик порожній".
+     
+
+4 ВИСНОВКИ
+
+     У ході виконання даної роботи було розроблено простий, функціональний веб-магазин. Проект демонструє солідне розуміння основних принципів веб-розробки на PHP та представляє функціональний базовий інтернет-магазин. Основними перевагами є простота і зрозумілість коду, модульна архітектура з розділенням відповідальності, використання PDO для безпечної роботи з базою даних та автоматична ініціалізація даних.
+
+
+ДОДАТОК А
+Відеозапис
+
+Відеозапис презентації результатів лабораторної роботи: https://youtu.be/ 
+
+Хронологічний опис відеозапису:
+
+00:00 - Вступ
+00:16 - Опис файлу з даними про продукти
+
+
+ДОДАТОК Б
+Програмний код
+Б.1 Файл cart.php
+
+GitHub репозиторій: https://github.
+
+  1 <?php
+  2 require_once 'config.php';
+  3
+  4 if (isset($_GET['remove']) && isset($_SESSION['cart'])) {
+  5     $remove_id = (int)$_GET['remove'];
+  6     foreach ($_SESSION['cart'] as $key => $item) {
+  7         if ($item['id'] == $remove_id) {
+  8             unset($_SESSION['cart'][$key]);
+  9             $_SESSION['cart'] = array_values($_SESSION['cart']);
+ 10             break;
+ 11         }
+ 12     }
+ 13     header('Location: cart.php');
+ 14     exit;
+ 15 }
+ 16
+ 17 include 'header.php';
+ 18 ?>
+ 19
+ 20 <div class="container">
+ 21     <h1>Кошик</h1>
+ 22
+ 23     <?php if (empty($_SESSION['cart'])): ?>
+ 24         <p>Ваш кошик порожній.</p>
+ 25         <p><a href="products.php">Перейти до покупок</a></p>
+ 26     <?php else: ?>
+ 27         <table>
+ 28             <tr>
+ 29                 <th>ID</th>
+ 30                 <th>Name</th>
+ 31                 <th>Price</th>
+ 32                 <th>Count</th>
+ 33                 <th>Sum</th>
+ 34                 <th>Дія</th>
+ 35             </tr>
+ 36
+ 37             <?php
+ 38             $total = 0;
+ 39             foreach ($_SESSION['cart'] as $item):
+ 40                 $sum = $item['price'] * $item['count'];
+ 41                 $total += $sum;
+ 42             ?>
+ 43             <tr>
+ 44                 <td><?php echo $item['id']; ?></td>
+ 45                 <td><?php echo htmlspecialchars($item['name']); ?></td>
+ 46                 <td><?php echo number_format($item['price'], 2); ?></td>
+ 47                 <td><?php echo $item['count']; ?></td>
+ 48                 <td><?php echo number_format($sum, 2); ?></td>
+ 49                 <td>
+ 50                     <a href="cart.php?remove=<?php echo $item['id']; ?>"
+ 51                        style="color: red; text-decoration: none; font-size: 18px;">Delete</a>
+ 52                 </td>
+ 53             </tr>
+ 54             <?php endforeach; ?>
+ 55
+ 56             <tr style="background-color: #f0f0f0; font-weight: bold;">
+ 57                 <td colspan="4">Total</td>
+ 58                 <td><?php echo number_format($total, 2); ?></td>
+ 59                 <td></td>
+ 60             </tr>
+ 61         </table>
+ 62
+ 63         <div style="margin-top: 20px;">
+ 64             <button class="btn" onclick="window.location.href='cart.php?clear=1'">Cancel</button>
+ 65             <button class="btn" onclick="window.location.href='cart.php?clear=1'; alert='Оплата успішна'" >Pay</button>
+ 66
+ 67         </div>
+ 68
+ 69         <?php
+ 70         if (isset($_GET['clear'])) {
+ 71             unset($_SESSION['cart']);
+ 72             header('Location: cart.php');
+ 73             exit;
+ 74         }
+ 75         ?>
+ 76     <?php endif; ?>
+ 77 </div>
+ 78
+ 79 <?php include 'footer.php'; ?>
+
+
+Б.2 Файл config.php
+
+GitHub репозиторій: https://github.
+
+  1 <?php
+  2 session_start();
+  3 
+  4 try {
+  5     $pdo = new PDO('sqlite:shop.db');
+  6     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  7     
+  8     $pdo->exec("CREATE TABLE IF NOT EXISTS products (
+  9         id INTEGER PRIMARY KEY AUTOINCREMENT,
+ 10         name TEXT NOT NULL,
+ 11         price DECIMAL(10,2) NOT NULL
+ 12     )");
+ 13     
+ 14     $check = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
+ 15     if ($check == 0) {
+ 16         $pdo->exec("INSERT INTO products (name, price) VALUES 
+ 17             ('Молоко пастеризоване', 12.00),
+ 18             ('Хліб чорний', 9.00),
+ 19             ('Сир білий', 21.00),
+ 20             ('Сметана 20%', 25.00),
+ 21             ('Кефір 1%', 19.00),
+ 22             ('Вода газована', 18.00),
+ 23             ('Печиво \"Весна\"', 14.00)");
+ 24     }
+ 25
+ 26 } catch(PDOException $e) {
+ 27     die("Connection failed: " . $e->getMessage());
+ 28 }
+ 29
+ 30 function getAllProducts($pdo) {
+ 31     $stmt = $pdo->query("SELECT * FROM products ORDER BY id");
+ 32     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 33 }
+ 34
+ 35 function getProductById($pdo, $id) {
+ 36     $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+ 37     $stmt->execute([$id]);
+ 38     return $stmt->fetch(PDO::FETCH_ASSOC);
+ 39 }
+ 40 ?>
+
+
+Б.3 Файл footer.php
+
+GitHub репозиторій: https://github.
+
+  1 <div class="footer">
+  2         <a href="index.php">Home</a> |
+  3         <a href="products.php">Products</a> |
+  4         <a href="cart.php">Cart</a> |
+  5         <a href="#about">About Us</a>
+  6     </div>
+  7 </body>
+  8 </html>
+
+
+Б.4 Файл header.php
+
+GitHub репозиторій: https://github.
+
+  1 <!DOCTYPE html>
+  2 <html lang="uk">
+  3 <head>
+  4     <meta charset="UTF-8">
+  5     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  6     <title>Інтернет-магазин</title>
+  7     <style>
+  8         body {
+  9             font-family: Arial, sans-serif;
+ 10             margin: 0;
+ 11             padding: 0;
+ 12             background-color: #f5f5f5;
+ 13         }
+ 14         .header {
+ 15             background-color: #333;
+ 16             color: white;
+ 17             padding: 10px 0;
+ 18             text-align: center;
+ 19         }
+ 20         .header a {
+ 21             color: white;
+ 22             text-decoration: none;
+ 23             margin: 0 10px;
+ 24             padding: 5px 10px;
+ 25             border: 1px solid #ccc;
+ 26             background-color: #555;
+ 27         }
+ 28         .header a:hover {
+ 29             background-color: #777;
+ 30         }
+ 31         .container {
+ 32             max-width: 800px;
+ 33             margin: 20px auto;
+ 34             padding: 20px;
+ 35             background-color: white;
+ 36             border: 2px solid #333;
+ 37         }
+ 38         .footer {
+ 39             background-color: #333;
+ 40             color: white;
+ 41             text-align: center;
+ 42             padding: 10px 0;
+ 43             margin-top: 20px;
+ 44         }
+ 45         .footer a {
+ 46             color: white;
+ 47             text-decoration: none;
+ 48             margin: 0 5px;
+ 49         }
+ 50         table {
+ 51             width: 100%;
+ 52             border-collapse: collapse;
+ 53             margin: 20px 0;
+ 54         }
+ 55         table, th, td {
+ 56             border: 1px solid #333;
+ 57         }
+ 58         th, td {
+ 59             padding: 10px;
+ 60             text-align: center;
+ 61         }
+ 62         th {
+ 63             background-color: #333;
+ 64             color: white;
+ 65         }
+ 66         input[type="number"] {
+ 67             width: 50px;
+ 68             text-align: center;
+ 69         }
+ 70         .btn {
+ 71             background-color: #333;
+ 72             color: white;
+ 73             padding: 10px 20px;
+ 74             border: none;
+ 75             cursor: pointer;
+ 76             margin: 10px 5px;
+ 77         }
+ 78         .btn:hover {
+ 79             background-color: #555;
+ 80         }
+ 81         .error {
+ 82             color: red;
+ 83             background-color: #ffebeb;
+ 84             padding: 10px;
+ 85             margin: 10px 0;
+ 86             border: 1px solid red;
+ 87         }
+ 88         .success {
+ 89             color: green;
+ 90             background-color: #ebffeb;
+ 91             padding: 10px;
+ 92             margin: 10px 0;
+ 93             border: 1px solid green;
+ 94         }
+ 95         .product-item {
+ 96             margin: 10px 0;
+ 97             padding: 10px;
+ 98             border: 1px solid #ddd;
+ 99         }
+100     </style>
+101 </head>
+102 <body>
+103     <div class="header">
+104         <a href="index.php">Home</a> |
+105         <a href="products.php">Products</a> |
+106         <a href="cart.php">Cart</a>
+107     </div>
+
+
+Б.5 Файл index.php
+
+GitHub репозиторій: https://github.
+
+  1 <?php
+  2 require_once 'config.php';
+  3 include 'header.php';
+  4 ?>
+  5
+  6 <div class="container">
+  7     <h1>Ласкаво просимо до нашого інтернет-магазину!</h1>
+  8
+  9     <h2>Доступні розділи:</h2>
+ 10     <ul>
+ 11         <li><a href="products.php">Сторінка товарів</a> - перегляд та вибір товарів</li>
+ 12         <li><a href="cart.php">Кошик</a> - перегляд обраних товарів</li>
+ 13     </ul>
+ 14
+ 15     <p>Оберіть розділ для початку покупок!</p>
+ 16 </div>
+ 17
+ 18 <?php include 'footer.php'; ?>
+
+
+Б.6 Файл products.php
+
+GitHub репозиторій: https://github.
+
+  1 <?php
+  2 require_once 'config.php';
+  3
+  4 function getCartQuantity($product_id) {
+  5     if (!isset($_SESSION['cart'])) {
+  6         return 0;
+  7     }
+  8
+  9     foreach ($_SESSION['cart'] as $item) {
+ 10         if ($item['id'] == $product_id) {
+ 11             return $item['count'];
+ 12         }
+ 13     }
+ 14     return 0;
+ 15 }
+ 16
+ 17 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
+ 18     $products = getAllProducts($pdo);
+ 19     $cart_items = array();
+ 20     $valid = true;
+ 21     $error_message = '';
+ 22
+ 23     foreach ($products as $product) {
+ 24         $count_field = 'count_' . $product['id'];
+ 25         if (isset($_POST[$count_field]) && $_POST[$count_field] > 0) {
+ 26             $count = (int)$_POST[$count_field];
+ 27             if ($count > 0) {
+ 28                 $cart_items[] = array(
+ 29                     'id' => $product['id'],
+ 30                     'name' => $product['name'],
+ 31                     'price' => $product['price'],
+ 32                     'count' => $count
+ 33                 );
+ 34             }
+ 35         }
+ 36     }
+ 37
+ 38     if (empty($cart_items)) {
+ 39         $error_message = 'Перевірте будь ласка введені дані. Оберіть хоча б один товар.';
+ 40         $valid = false;
+ 41     }
+ 42
+ 43     if ($valid) {
+ 44         if (!isset($_SESSION['cart'])) {
+ 45             $_SESSION['cart'] = array();
+ 46         }
+ 47
+ 48         foreach ($cart_items as $item) {
+ 49             $found = false;
+ 50             foreach ($_SESSION['cart'] as &$cart_item) {
+ 51                 if ($cart_item['id'] == $item['id']) {
+ 52                     $cart_item['count'] = $item['count'];
+ 53                     $found = true;
+ 54                     break;
+ 55                 }
+ 56             }
+ 57             if (!$found) {
+ 58                 $_SESSION['cart'][] = $item;
+ 59             }
+ 60         }
+ 61         header('Location: cart.php');
+ 62         exit;
+ 63     }
+ 64 }
+ 65
+ 66 include 'header.php';
+ 67 ?>
+ 68
+ 69 <h2>Список товарів</h2>
+ 70
+ 71 <?php if (!empty($error_message)): ?>
+ 72     <div style="color: red; margin: 10px 0;"><?php echo $error_message; ?></div>
+ 73 <?php endif; ?>
+ 74
+ 75 <form method="POST">
+ 76     <table border="1" style="width: 100%; border-collapse: collapse;">
+ 77         <tr>
+ 78             <th>ID</th>
+ 79             <th>Назва</th>
+ 80             <th>Ціна</th>
+ 81             <th>Кількість в кошику</th>
+ 82             <th>Нова кількість</th>
+ 83         </tr>
+ 84
+ 85         <?php
+ 86         $products = getAllProducts($pdo);
+ 87         foreach ($products as $product):
+ 88             $current_quantity = getCartQuantity($product['id']);
+ 89         ?>
+ 90         <tr>
+ 91             <td><?php echo $product['id']; ?></td>
+ 92             <td><?php echo $product['name']; ?></td>
+ 93             <td><?php echo $product['price']; ?> грн</td>
+ 94             <td style="font-weight: bold; color: <?php echo $current_quantity > 0 ? 'green' : 'gray'; ?>">
+ 95                 <?php echo $current_quantity > 0 ? $current_quantity : 'Немає'; ?>
+ 96             </td>
+ 97             <td>
+ 98                 <input type="number"
+ 99                        name="count_<?php echo $product['id']; ?>"
+100                        min="0"
+101                        max="999" 
+102                        value="<?php echo $current_quantity; ?>"
+103                        style="width: 80px;">
+104             </td>
+105         </tr>
+106         <?php endforeach; ?>
+107     </table>
+108
+109     <br>
+110     <input type="submit" name="submit" value="Оновити кошик"
+111            style="padding: 10px 20px; background: #007cba; color: white; border: none; cursor: pointer;">
+112 </form>
+
+
